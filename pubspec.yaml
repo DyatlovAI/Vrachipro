@@ -28,3 +28,10 @@ flutter:
   assets:
     - assets/images/logo.png
     - assets/images/delete.png
+    - assets/images/middle.png
+    - assets/images/small.png
+    - assets/images/sort-alt.png
+    - assets/images/search.png
+    - assets/images/record.png
+    - assets/images/profile.png
+    - assets/images/main.png

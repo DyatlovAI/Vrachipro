@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vrachipro/Screens/codeinput.dart';
 import 'package:vrachipro/Screens/pincode.dart';
+import 'package:vrachipro/Screens/registerscreen.dart';
+import 'package:vrachipro/Screens/homepage.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -92,7 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 Positioned(
-                  left: 30,
+                  left: 20,
                   top: -10,
                   child: AnimatedDefaultTextStyle(
                     duration: Duration(milliseconds: 200),
@@ -111,14 +113,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 60),
+            SizedBox(height: 70),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PinCodeScreen()),
+                    MaterialPageRoute(builder: (context) => SpecialistsPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
