@@ -8,10 +8,9 @@ class SpecialistsPage extends StatefulWidget {
 }
 
 class _SpecialistsPageState extends State<SpecialistsPage> {
-  bool isAdultSelected = true; // Состояние для кнопки "Взрослому"
-  bool isChildSelected = false; // Состояние для кнопки "Ребенку"
-
-  // Функция для обновления состояния кнопок
+  bool isAdultSelected = true;
+  bool isChildSelected = false;
+  String? selectedSortOption; // Переменная для хранения текущего выбранного значения;
   void toggleButton(bool isAdult) {
     setState(() {
       isAdultSelected = isAdult;
@@ -60,14 +59,14 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 30),
             buildContainerWithButtons(),
-            const SizedBox(height: 16),
+            const SizedBox(height: 30),
             const Text(
               'Специализация',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
             Wrap(
               spacing: 12,
               runSpacing: 12,
@@ -81,8 +80,7 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                 _buildSpecializationButton('Терапевт'),
               ],
             ),
-            const SizedBox(height: 16),
-            // Заголовок "Наши врачи"
+            const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -92,19 +90,35 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                 ),
                 Row(
                   children: [
-                    Text(
-                      'Сортировка',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    SizedBox(width: 8),
-                    Image.asset(
-                      'assets/images/sort-alt.png',
-                      width: 14,
-                      height: 15,
+                    GestureDetector(
+                      onTap: () {
+                        showSortDialog(
+                          context: context,
+                          initialSortOption: selectedSortOption, // Передаём текущее выбранное значение
+                          onApply: (newSortOption) {
+                            setState(() {
+                              selectedSortOption = newSortOption; // Обновляем выбранную сортировку
+                            });
+                          },
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            selectedSortOption ?? 'Сортировка', // Показываем текст выбранного варианта или "Сортировка"
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                          const SizedBox(width: 8),
+                          Image.asset(
+                            'assets/images/sort-alt.png',
+                            width: 14,
+                            height: 15,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
-                ),
-              ],
+                ),              ],
             ),
             const SizedBox(height: 16),
             Expanded(
@@ -164,7 +178,7 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
 
         ],
         currentIndex: 0,
-        selectedItemColor: Colors.blue,
+        selectedItemColor: Color(0xFF00CCFF),
         unselectedItemColor: Colors.grey,
         onTap: (index) {
 
@@ -245,6 +259,130 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
     );
   }
 
+
+  Future<void> showSortDialog({
+    required BuildContext context,
+    required String? initialSortOption, // Текущий выбор сортировки
+    required ValueChanged<String?> onApply, // Функция для передачи выбранного значения
+  }) async {
+    String? temporarySortOption = initialSortOption; // Временная переменная для выбора внутри диалога
+
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Заголовок
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Сортировать',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Список вариантов сортировки
+                  ListTile(
+                    title: const Text('По возрастанию'),
+                    onTap: () {
+                      setModalState(() {
+                        temporarySortOption = 'По возрастанию';
+                      });
+                    },
+                    tileColor: temporarySortOption == 'По возрастанию'
+                        ? Colors.blue.withOpacity(0.2)
+                        : null,
+                    selectedTileColor: Colors.blue.withOpacity(0.2),
+                    selected: temporarySortOption == 'По возрастанию',
+                  ),
+                  ListTile(
+                    title: const Text('По убыванию'),
+                    onTap: () {
+                      setModalState(() {
+                        temporarySortOption = 'По убыванию';
+                      });
+                    },
+                    tileColor: temporarySortOption == 'По убыванию'
+                        ? Colors.blue.withOpacity(0.2)
+                        : null,
+                    selectedTileColor: Colors.blue.withOpacity(0.2),
+                    selected: temporarySortOption == 'По убыванию',
+                  ),
+                  ListTile(
+                    title: const Text('По цене'),
+                    onTap: () {
+                      setModalState(() {
+                        temporarySortOption = 'По цене';
+                      });
+                    },
+                    tileColor: temporarySortOption == 'По цене'
+                        ? Colors.blue.withOpacity(0.2)
+                        : null,
+                    selectedTileColor: Colors.blue.withOpacity(0.2),
+                    selected: temporarySortOption == 'По цене',
+                  ),
+                  ListTile(
+                    title: const Text('По стажу'),
+                    onTap: () {
+                      setModalState(() {
+                        temporarySortOption = 'По стажу';
+                      });
+                    },
+                    tileColor: temporarySortOption == 'По стажу'
+                        ? Colors.blue.withOpacity(0.2)
+                        : null,
+                    selectedTileColor: Colors.blue.withOpacity(0.2),
+                    selected: temporarySortOption == 'По стажу',
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Кнопка "Применить"
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50), // Растянуть кнопку на всю ширину
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        backgroundColor: Colors.blue,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        onApply(temporarySortOption); // Передаём выбранный результат
+                      },
+                      child: const Text(
+                        'Применить',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
   Widget _buildDoctorCard({
     required String name,
     required String specialization,
