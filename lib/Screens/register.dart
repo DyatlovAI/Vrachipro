@@ -3,6 +3,7 @@ import 'package:vrachipro/Screens/codeinput.dart';
 import 'package:vrachipro/Screens/pincode.dart';
 import 'package:vrachipro/Screens/registerscreen.dart';
 import 'package:vrachipro/Screens/homepage.dart';
+import 'package:vrachipro/Screens/profilemedic.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -120,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SpecialistsPage()),
+                    MaterialPageRoute(builder: (context) => DoctorProfilePage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(

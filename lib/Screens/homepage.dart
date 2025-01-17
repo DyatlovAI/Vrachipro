@@ -10,7 +10,7 @@ class SpecialistsPage extends StatefulWidget {
 class _SpecialistsPageState extends State<SpecialistsPage> {
   bool isAdultSelected = true;
   bool isChildSelected = false;
-  String? selectedSortOption; // Переменная для хранения текущего выбранного значения;
+  String? selectedSortOption;
   void toggleButton(bool isAdult) {
     setState(() {
       isAdultSelected = isAdult;
@@ -94,10 +94,10 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                       onTap: () {
                         showSortDialog(
                           context: context,
-                          initialSortOption: selectedSortOption, // Передаём текущее выбранное значение
+                          initialSortOption: selectedSortOption,
                           onApply: (newSortOption) {
                             setState(() {
-                              selectedSortOption = newSortOption; // Обновляем выбранную сортировку
+                              selectedSortOption = newSortOption;
                             });
                           },
                         );
@@ -105,7 +105,7 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                       child: Row(
                         children: [
                           Text(
-                            selectedSortOption ?? 'Сортировка', // Показываем текст выбранного варианта или "Сортировка"
+                            selectedSortOption ?? 'Сортировка',
                             style: const TextStyle(fontSize: 14),
                           ),
                           const SizedBox(width: 8),
@@ -150,7 +150,6 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
         ),
       ),
       backgroundColor: Color(0xFFF5F5F5),
-
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -181,7 +180,6 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
         selectedItemColor: Color(0xFF00CCFF),
         unselectedItemColor: Colors.grey,
         onTap: (index) {
-
         },
         backgroundColor: Color(0xFFF5F5F5),
 
@@ -262,10 +260,10 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
 
   Future<void> showSortDialog({
     required BuildContext context,
-    required String? initialSortOption, // Текущий выбор сортировки
-    required ValueChanged<String?> onApply, // Функция для передачи выбранного значения
+    required String? initialSortOption,
+    required ValueChanged<String?> onApply,
   }) async {
-    String? temporarySortOption = initialSortOption; // Временная переменная для выбора внутри диалога
+    String? temporarySortOption = initialSortOption;
 
     await showModalBottomSheet(
       context: context,
@@ -281,7 +279,6 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Заголовок
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -296,8 +293,6 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                     ],
                   ),
                   const SizedBox(height: 8),
-
-                  // Список вариантов сортировки
                   ListTile(
                     title: const Text('По возрастанию'),
                     onTap: () {
@@ -353,12 +348,11 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
 
                   const SizedBox(height: 20),
 
-                  // Кнопка "Применить"
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50), // Растянуть кнопку на всю ширину
+                        minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),
@@ -366,7 +360,7 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                        onApply(temporarySortOption); // Передаём выбранный результат
+                        onApply(temporarySortOption);
                       },
                       child: const Text(
                         'Применить',
