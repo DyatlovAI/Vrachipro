@@ -121,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DoctorProfilePage()),
+                    MaterialPageRoute(builder: (context) => Register2Screen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
