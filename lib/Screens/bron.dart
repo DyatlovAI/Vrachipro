@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:vrachipro/Screens/vajno.dart';
 
-class DoctorProfilePage extends StatefulWidget {
-  const DoctorProfilePage({Key? key}) : super(key: key);
+class BronPage extends StatefulWidget {
+  const BronPage({Key? key}) : super(key: key);
 
   @override
-  _DoctorProfileState createState() => _DoctorProfileState();
+  _BronPageState createState() => _BronPageState();
 }
 
-class _DoctorProfileState extends State<DoctorProfilePage> {
+class _BronPageState extends State<BronPage> {
   bool isAdultSelected = true;
   bool isChildSelected = false;
   String? selectedSortOption;
@@ -16,10 +16,102 @@ class _DoctorProfileState extends State<DoctorProfilePage> {
   bool isEducationExpanded1 = false;
   String? selectedDate;
   String? selectedTime;
+  String? selectedDateTime;
+  final FocusNode focusNode = FocusNode();
+
+  bool isFocused = false;
+  Widget bookingConfirmation() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Color(0xFFF5F5F5),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(width: 8),
+                  // Текст заголовка
+                  const Text(
+                    'Время забронировано',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+
+              const Text(
+                'Неоплаченная запись отменяется через 15 минут',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        // Кнопка
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          decoration: BoxDecoration(
+            color: const Color(0xFF00CCFF),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: const Center(
+            child: Text(
+              'Оплатить 1000 руб.',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    focusNode.addListener(() {
+      setState(() {
+        isFocused = focusNode.hasFocus;
+      });
+    });
+  }
 
   // Move availableDates and availableTimes here
   final List<String> availableDates = ["15.01", "17.01", "18.01", "19.01", "20.01"];
   final List<String> availableTimes = ["15:00", "17:30"];
+  List<String> availableDateTime = [
+    "17.01.2025",
+    "14:00"
+
+  ];
   final List<Map<String, String>> reviews = [
     {
       'author': 'Петрова М.',
@@ -62,7 +154,7 @@ class _DoctorProfileState extends State<DoctorProfilePage> {
         elevation: 0,
         backgroundColor: const Color(0xFFF5F5F5),
         title: const Text(
-          'Врач',
+          'Онлайн-консультация',
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
@@ -83,6 +175,9 @@ class _DoctorProfileState extends State<DoctorProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              bookingConfirmation(),
+              const SizedBox(height: 24),
+
               Row(
                 children: [
                   CircleAvatar(
@@ -145,8 +240,6 @@ class _DoctorProfileState extends State<DoctorProfilePage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
-              buildContainerWithButtons(),
               const SizedBox(height: 16),
 
               if (isAdultSelected) ...[
@@ -158,7 +251,9 @@ class _DoctorProfileState extends State<DoctorProfilePage> {
               const SizedBox(height: 24),
             ],
           ),
+
         ),
+
       ),
       bottomNavigationBar: !isChildSelected
           ? Padding(
@@ -184,7 +279,7 @@ class _DoctorProfileState extends State<DoctorProfilePage> {
                 ),
               ),
               child: const Text(
-                'Записаться',
+                'Подключиться',
                 style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
               ),
             ),
@@ -308,23 +403,23 @@ class _DoctorProfileState extends State<DoctorProfilePage> {
           ),
         const SizedBox(height: 24),
         const Text(
-          'Выберите дату записи',
+          'Дата и время',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 8),
         Wrap(
           spacing: 12,
-          children: availableDates.map((time) {
+          children: availableDateTime.map((dateTime) {
             return GestureDetector(
               onTap: () {
                 setState(() {
-                  selectedDate = time;
+                  selectedDateTime = dateTime;
                 });
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  color: selectedDate == time ? Color(0xFF00CCFF) : const Color(0xFFF5F5F5),
+                  color: selectedDateTime == dateTime ? const Color(0xFF00CCFF) : const Color(0xFFF5F5F5),
                   borderRadius: BorderRadius.circular(25),
                   boxShadow: [
                     BoxShadow(
@@ -335,9 +430,9 @@ class _DoctorProfileState extends State<DoctorProfilePage> {
                   ],
                 ),
                 child: Text(
-                  time,
+                  dateTime,
                   style: TextStyle(
-                    color: selectedDate == time ? Colors.white : Colors.black,
+                    color: selectedDateTime == dateTime ? Colors.white : Colors.black,
                   ),
                 ),
               ),
@@ -345,43 +440,130 @@ class _DoctorProfileState extends State<DoctorProfilePage> {
           }).toList(),
         ),
         const SizedBox(height: 24),
+
         const Text(
-          'Выберите время записи',
+          'Задать вопрос',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 12,
-          children: availableTimes.map((time) {
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedTime = time;
-                });
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(
-                  color: selectedTime == time ? Color(0xFF00CCFF) : const Color(0xFFF5F5F5),
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF646464).withOpacity(0.2),
-                      offset: const Offset(0, 2),
-                      blurRadius: 6,
-                    )
-                  ],
+        const SizedBox(height: 24),
+
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            TextField(
+              focusNode: focusNode,
+              keyboardType: TextInputType.phone,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+              cursorColor: Color(0xFF00CCFF),
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 16.0,
+                  horizontal: 20.0,
                 ),
-                child: Text(
-                  time,
-                  style: TextStyle(
-                    color: selectedTime == time ? Colors.white : Colors.black,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(color: Color(0xFF858585)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(
+                    color: Color(0xFF00CCFF),
+                    width: 2,
                   ),
                 ),
               ),
-            );
-          }).toList(),
+            ),
+            Positioned(
+              left: 20,
+              top: -10,
+              child: AnimatedDefaultTextStyle(
+                duration: Duration(milliseconds: 200),
+                style: TextStyle(
+                  fontSize: isFocused ? 14 : 16,
+                  color: isFocused
+                      ? Color(0xFF00CCFF)
+                      : Color(0xFF858585),
+                ),
+                child: Container(
+                  color: Color(0xFFF5F5F5),
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Text("Опишите вопрос"),
+                ),
+              ),
+            ),
+
+
+          ],
+
         ),
+        const SizedBox(height: 16),
+
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/addfile.png',
+              width: 50,
+              height: 50,
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(width: 16),
+
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      alignment: Alignment.centerLeft,
+                    ),
+                    child: const Text(
+                      "Добавить файл",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFF1A1A1A),
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BronPage()),
+              );                },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              backgroundColor: const Color(0xFF00CCFF),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            child: const Text(
+              'Сохранить',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+
       ],
     );
   }
@@ -413,7 +595,6 @@ class _DoctorProfileState extends State<DoctorProfilePage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Текст
                 const Text(
                   'Оставить отзыв',
                   style: TextStyle(
