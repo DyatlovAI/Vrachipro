@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:vrachipro/Screens/vajno.dart';
 
-class DoctorProfilePage extends StatefulWidget {
-  const DoctorProfilePage({Key? key}) : super(key: key);
+class VidProfilePage extends StatefulWidget {
+  const VidProfilePage({Key? key}) : super(key: key);
 
   @override
-  _DoctorProfileState createState() => _DoctorProfileState();
+  _VidProfileState createState() => _VidProfileState();
 }
 
-class _DoctorProfileState extends State<DoctorProfilePage> {
+class _VidProfileState extends State<VidProfilePage> {
   bool isAdultSelected = true;
   bool isChildSelected = false;
   String? selectedSortOption;
@@ -170,38 +170,6 @@ class _DoctorProfileState extends State<DoctorProfilePage> {
           ),
         ),
       ),
-      bottomNavigationBar: !isChildSelected
-          ? Padding(
-        padding: const EdgeInsets.only(bottom: 42, left: 18, right: 18),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: selectedDate != null && selectedTime != null
-                  ? () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => VajnoPage()),
-                );
-              }
-                  : null,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: const Color(0xFF00CCFF),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              child: const Text(
-                'Записаться',
-                style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
-              ),
-            ),
-          ),
-        ),
-      )
-          : null,
       backgroundColor: const Color(0xFFF5F5F5),
     );
   }
@@ -317,81 +285,6 @@ class _DoctorProfileState extends State<DoctorProfilePage> {
             ),
           ),
         const SizedBox(height: 24),
-        const Text(
-          'Выберите дату записи',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-        ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 12,
-          children: availableDates.map((time) {
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedDate = time;
-                });
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(
-                  color: selectedDate == time ? Color(0xFF00CCFF) : const Color(0xFFF5F5F5),
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF646464).withOpacity(0.2),
-                      offset: const Offset(0, 2),
-                      blurRadius: 6,
-                    )
-                  ],
-                ),
-                child: Text(
-                  time,
-                  style: TextStyle(
-                    color: selectedDate == time ? Colors.white : Colors.black,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-        const SizedBox(height: 24),
-        const Text(
-          'Выберите время записи',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-        ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 12,
-          children: availableTimes.map((time) {
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedTime = time;
-                });
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(
-                  color: selectedTime == time ? Color(0xFF00CCFF) : const Color(0xFFF5F5F5),
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF646464).withOpacity(0.2),
-                      offset: const Offset(0, 2),
-                      blurRadius: 6,
-                    )
-                  ],
-                ),
-                child: Text(
-                  time,
-                  style: TextStyle(
-                    color: selectedTime == time ? Colors.white : Colors.black,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
       ],
     );
   }

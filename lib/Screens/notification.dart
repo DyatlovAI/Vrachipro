@@ -35,6 +35,16 @@ class _NotificationsPageState extends State<NotificationsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Image.asset(
+            "assets/images/default.png",
+            width: 20,
+            height: 20,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         backgroundColor: Color(0xFFF5F5F5),
         elevation: 0,
         title: const Text(

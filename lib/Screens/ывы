@@ -1,0 +1,60 @@
+ Widget buildCustomDropdown({
+    required String label,
+    required String value,
+    required List<String> items,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return Container(
+      padding: EdgeInsets.only(top: 10),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          DropdownButtonFormField<String>(
+            value: value.isEmpty ? null : value,
+            icon: Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Image.asset(
+                "assets/images/middle.png",
+                height: 16,
+                width: 16,
+              ),
+            ),
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Color(0xFF858585)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Color(0xFF00CCFF), width: 2),
+              ),
+            ),
+            onChanged: onChanged,
+            items: items
+                .map((item) => DropdownMenuItem<String>(
+              value: item,
+              child: Text(
+                item,
+                style: TextStyle(fontSize: 16),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ))
+                .toList(),
+          ),
+          Positioned(
+            left: 20,
+            top: -10,
+            child: Container(
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                label,
+                style: TextStyle(fontSize: 14, color: Color(0xFF858585)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }

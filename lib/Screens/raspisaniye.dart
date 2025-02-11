@@ -2,11 +2,108 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:vrachipro/Screens/profiledoctor.dart';
 import 'package:vrachipro/Screens/homepagevrachi.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 class RaspisaniyeVrachiScreen extends StatefulWidget {
   @override
   _RaspisaniyeVrachiScreenState createState() =>
       _RaspisaniyeVrachiScreenState();
+}
+class CustomDropdown extends StatefulWidget {
+  final String label;
+  final String value;
+  final List<String> items;
+  final ValueChanged<String?> onChanged;
+
+  const CustomDropdown({
+    Key? key,
+    required this.label,
+    required this.value,
+    required this.items,
+    required this.onChanged,
+  }) : super(key: key);
+
+  @override
+  _CustomDropdownState createState() => _CustomDropdownState();
+}
+
+class _CustomDropdownState extends State<CustomDropdown> {
+  bool isDropdownOpened = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(top: 10, bottom: 10),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          DropdownButton2<String>(
+            value: widget.value.isEmpty ? null : widget.value,
+            isExpanded: true,
+            buttonStyleData: ButtonStyleData(
+              padding: EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(color: Color(0xFF00CCFF), width: 1),
+                color: Colors.white,
+              ),
+            ),
+            dropdownStyleData: DropdownStyleData(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(color: Color(0xFF00CCFF), width: 1),
+                color: Colors.white,
+              ),
+              maxHeight: 350,
+            ),
+            iconStyleData: IconStyleData(
+              icon: AnimatedRotation(
+                turns: isDropdownOpened ? 0 : 0.5,
+                duration: Duration(milliseconds: 200),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Image.asset(
+                    "assets/images/middle.png",
+                    height: 16,
+                    width: 16,
+                    color: isDropdownOpened ? Color(0xFF00CCFF) : Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            onChanged: (String? newValue) {
+              widget.onChanged(newValue);
+              setState(() {
+                isDropdownOpened = !isDropdownOpened;
+              });
+            },
+            items: widget.items.map((item) {
+              return DropdownMenuItem<String>(
+                value: item,
+                child: Text(
+                  item,
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              );
+            }).toList(),
+          ),
+          Positioned(
+            left: 20,
+            top: -10,
+            child: Container(
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                widget.label,
+                style: TextStyle(fontSize: 14, color: Color(0xFF858585)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _RaspisaniyeVrachiScreenState extends State<RaspisaniyeVrachiScreen> {
@@ -15,6 +112,10 @@ class _RaspisaniyeVrachiScreenState extends State<RaspisaniyeVrachiScreen> {
   int _selectedIndex = 1;
   int _activeFilterIndex = 2;
   String? selectedTime;
+  String selectedValue = "";
+  String selectedValue2 = "";
+  String selectedValue3 = "";
+
 
   final List<String> availableTimes = ["15:00", "17:30", "18:00"];
 
@@ -42,9 +143,13 @@ class _RaspisaniyeVrachiScreenState extends State<RaspisaniyeVrachiScreen> {
   }
 
   void _onFilterSelected(int index) {
-    setState(() {
-      _activeFilterIndex = index;
-    });
+    if (index == 0) {
+      _showAddSlotDialog(context); // Открывает диалоговое окно в центре
+    } else {
+      setState(() {
+        _activeFilterIndex = index;
+      });
+    }
   }
 
   @override
@@ -172,7 +277,7 @@ class _RaspisaniyeVrachiScreenState extends State<RaspisaniyeVrachiScreen> {
         backgroundColor: _activeFilterIndex == index
             ? Color(0xFFFFFFFF)
             : Color(0xFFF5F5F5),
-        foregroundColor: _activeFilterIndex == index ? Colors.black : Colors.black,
+        foregroundColor: Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -247,6 +352,109 @@ class _RaspisaniyeVrachiScreenState extends State<RaspisaniyeVrachiScreen> {
           ),
         ),
       ],
+    );
+  }
+
+
+  void _showAddSlotDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          insetPadding: EdgeInsets.symmetric(horizontal: 25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 10, top: 10),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "Создать слот",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20), // Отступы по 25 пикселей с обеих сторон
+                child: Column(
+                  children: [
+                    CustomDropdown(
+                      label: "Ранее время",
+                      value: selectedValue,
+                      items: ["10:00", "11:00", "12:00", "13:00"],
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedValue = newValue ?? "";
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 15),
+
+                    CustomDropdown(
+                      label: "Поднее время",
+                      value: selectedValue2,
+                      items: ["10:00", "11:00", "12:00", "13:00"],
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedValue2 = newValue ?? "";
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 15),
+
+                    CustomDropdown(
+                      label: "Длительность",
+                      value: selectedValue3,
+                      items: ["30 мин", "15 мин"],
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedValue3 = newValue ?? "";
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 15),
+
+                    Container(
+                      width: double.infinity,
+                      height: 60,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF00CCFF),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: Text("Добавить", style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

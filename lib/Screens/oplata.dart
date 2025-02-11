@@ -14,6 +14,16 @@ class _OplataPageState extends State<OplataPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Image.asset(
+            "assets/images/default.png",
+            width: 20,
+            height: 20,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         elevation: 0,
         backgroundColor: const Color(0xFFF5F5F5),
         title: const Text(

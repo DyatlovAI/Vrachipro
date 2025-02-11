@@ -1,106 +1,139 @@
 import 'package:flutter/material.dart';
+import 'package:vrachipro/Screens/bron.dart';
+import 'package:vrachipro/Screens/homepage.dart';
+import 'package:vrachipro/Screens/profile.dart';
+class ZapisScreen extends StatefulWidget {
+  const ZapisScreen({Key? key}) : super(key: key);
+  @override
+  _ZapisScreenState createState() => _ZapisScreenState();
+}
 
-class ConsultationPage extends StatelessWidget {
-  const ConsultationPage({Key? key}) : super(key: key);
+class _ZapisScreenState extends State<ZapisScreen> {
+  int _selectedIndex = 1;
+
+  void _onItemTapped(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SpecialistsPage()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ZapisScreen()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilePage()),
+        );
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Image.asset(
-            "assets/images/default.png",
-            width: 20,
-            height: 20,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        title: Text("Мои записи", style: TextStyle(color: Colors.black)),
         backgroundColor: Color(0xFFF5F5F5),
         elevation: 0,
-        title: const Text(
-          'Мои консультации',
-          style: TextStyle(color: Colors.black, fontSize: 22),
-        ),
-        centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
-
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 50.0,
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      'assets/images/search.png',
-                      width: 15,
-                      height: 15,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BronPage(),
+                  ),
+                );
+              },
+              child: _buildDoctorCard(
+                name: 'Александрова М. В.',
+                specialization: "невролог",
+                rating: 5.0,
+                reviews: 68,
+                experience: "Стаж 10 лет",
+                imagePath: "assets/images/img1010.jpg",
+                dateTimeRow: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(
+                        "15.12.2024",
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: Color(0xFF1A1A1A)),
+                      ),
                     ),
-                  ),
-                  hintText: 'Найти специалиста',
-                  hintStyle: const TextStyle(color: Color(0xFF858585), fontSize: 16),
-                  filled: true,
-                  fillColor: const Color(0xFFD3D3D3),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide: BorderSide.none,
-                  ),
+                    SizedBox(width: 8.0),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(
+                        "16:16",
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: Color(0xFF1A1A1A)),
+                      ),
+                    ),
+                  ],
                 ),
+                question: "Текст вопроса, заданного клиентом для консультации со специалистом",
+                attachedImagePath: "assets/images/img.png",
+                attachedFileName: "img1011.png",
               ),
-            ),
-            const SizedBox(height: 16),
-
-            _buildDoctorCard(
-              name: 'Александрова М. В.',
-              specialization: "невролог",
-              rating: 5.0,
-              reviews: 68,
-              experience: "Стаж 10 лет",
-              imagePath: "assets/images/img1010.jpg",
-              dateTimeRow: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      "15.12.2024",
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: Color(0xFF1A1A1A)),
-                    ),
-                  ),
-                  SizedBox(width: 8.0),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      "16:16",
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: Color(0xFF1A1A1A)),
-                    ),
-                  ),
-                ],
-              ),
-              question: "Текст вопроса, заданного клиентом для консультации со специалистом",
-              attachedImagePath: "assets/images/img.png",
-              attachedFileName: "img1011.png",
             ),
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+      currentIndex: _selectedIndex,
+      onTap: (index) => _onItemTapped(context, index),
+      items: [
+        BottomNavigationBarItem(
+          icon: ImageIcon(
+            AssetImage('assets/images/main.png'),
+            size: 20.0,
+          ),
+          label: 'Главная',
+        ),
+        BottomNavigationBarItem(
+          icon: ImageIcon(
+            AssetImage('assets/images/record.png'),
+            size: 20.0,
+          ),
+          label: 'Запись',
+        ),
+        BottomNavigationBarItem(
+          icon: ImageIcon(
+            AssetImage('assets/images/profile.png'),
+            size: 20.0,
+          ),
+          label: 'Профиль',
+        ),
+      ],
+      selectedItemColor: Color(0xFF00CCFF),
+      unselectedItemColor: Colors.grey,
       backgroundColor: Color(0xFFF5F5F5),
+    ),
 
+      backgroundColor: Color(0xFFF5F5F5),
     );
   }
+
   Widget _buildDoctorCard({
     required String name,
     required String specialization,

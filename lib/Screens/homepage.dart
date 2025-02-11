@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:vrachipro/Screens/bron.dart';
 import 'profile.dart';
+import 'package:vrachipro/Screens/raspisaniye.dart';
+import 'package:vrachipro/Screens/profile.dart';
+import 'package:vrachipro/Screens/bron.dart';
+import 'package:vrachipro/Screens/profilemedic.dart';
+import 'package:vrachipro/Screens/zapis.dart';
+
 class SpecialistsPage extends StatefulWidget {
   const SpecialistsPage({Key? key}) : super(key: key);
 
@@ -17,6 +24,30 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
       isChildSelected = !isAdult;
     });
   }
+  int _selectedIndex = 0;
+
+  void _onItemTapped(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SpecialistsPage()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ZapisScreen()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilePage()),
+        );
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,105 +64,118 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 50.0,
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      'assets/images/search.png',
-                      width: 15,
-                      height: 15,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 50.0,
+                child: TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        'assets/images/search.png',
+                        width: 15,
+                        height: 15,
+                      ),
                     ),
-                  ),
-                  hintText: 'Найти специалиста',
-                  hintStyle: const TextStyle(color: Color(0xFF858585), fontSize: 16),
-                  filled: true,
-                  fillColor: const Color(0xFFD3D3D3),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide: BorderSide.none,
+                    hintText: 'Найти специалиста',
+                    hintStyle: const TextStyle(color: Color(0xFF858585), fontSize: 16),
+                    filled: true,
+                    fillColor: const Color(0xFFD3D3D3),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(50),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 30),
-            buildContainerWithButtons(),
-            const SizedBox(height: 30),
-            const Text(
-              'Специализация',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                _buildSpecializationButton('Должность'),
-                _buildSpecializationButton('Онколог'),
-                _buildSpecializationButton('Лор'),
-                _buildSpecializationButton('Офтальмолог'),
-                _buildSpecializationButton('Реаниматолог'),
-                _buildSpecializationButton('Психолог'),
-                _buildSpecializationButton('Терапевт'),
-              ],
-            ),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Наши врачи',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                ),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        showSortDialog(
-                          context: context,
-                          initialSortOption: selectedSortOption,
-                          onApply: (newSortOption) {
-                            setState(() {
-                              selectedSortOption = newSortOption;
-                            });
-                          },
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          Text(
-                            selectedSortOption ?? 'Сортировка',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                          const SizedBox(width: 8),
-                          Image.asset(
-                            'assets/images/sort-alt.png',
-                            width: 14,
-                            height: 15,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: ListView(
+              const SizedBox(height: 30),
+              buildContainerWithButtons(),
+              const SizedBox(height: 30),
+              const Text(
+                'Специализация',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: 16),
+              Wrap(
+                spacing: 12,
+                runSpacing: 12,
                 children: [
-                  _buildDoctorCard(
-                    name: 'Семенов А. И.',
-                    specialization: 'невролог',
-                    rating: 5.0,
-                    reviews: 68,
-                    experience: 'Стаж 10 лет',
-                    price: '1000 руб.',
-                    imagePath: 'assets/images/doctor1.png',
+                  _buildSpecializationButton('Должность'),
+                  _buildSpecializationButton('Онколог'),
+                  _buildSpecializationButton('Лор'),
+                  _buildSpecializationButton('Офтальмолог'),
+                  _buildSpecializationButton('Реаниматолог'),
+                  _buildSpecializationButton('Психолог'),
+                  _buildSpecializationButton('Терапевт'),
+                ],
+              ),
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Наши врачи',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          showSortDialog(
+                            context: context,
+                            initialSortOption: selectedSortOption,
+                            onApply: (newSortOption) {
+                              setState(() {
+                                selectedSortOption = newSortOption;
+                              });
+                            },
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              selectedSortOption ?? 'Сортировка',
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            const SizedBox(width: 8),
+                            Image.asset(
+                              'assets/images/sort-alt.png',
+                              width: 14,
+                              height: 15,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              ListView(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DoctorProfilePage(),
+                        ),
+                      );
+                    },
+                    child: _buildDoctorCard(
+                      name: 'Семенов А. И.',
+                      specialization: 'невролог',
+                      rating: 5.0,
+                      reviews: 68,
+                      experience: 'Стаж 10 лет',
+                      price: '1000 руб.',
+                      imagePath: 'assets/images/doctor1.png',
+                    ),
                   ),
                   const SizedBox(height: 8),
                   _buildDoctorCard(
@@ -145,13 +189,15 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       backgroundColor: Color(0xFFF5F5F5),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        currentIndex: _selectedIndex,
+        onTap: (index) => _onItemTapped(context, index),
+        items: [
           BottomNavigationBarItem(
             icon: ImageIcon(
               AssetImage('assets/images/main.png'),
@@ -173,16 +219,10 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
             ),
             label: 'Профиль',
           ),
-
-
         ],
-        currentIndex: 0,
         selectedItemColor: Color(0xFF00CCFF),
         unselectedItemColor: Colors.grey,
-        onTap: (index) {
-        },
         backgroundColor: Color(0xFFF5F5F5),
-
       ),
     );
   }

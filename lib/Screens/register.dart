@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vrachipro/Screens/codeinput.dart';
 import 'package:vrachipro/Screens/pincode.dart';
 import 'package:vrachipro/Screens/registerscreen.dart';
+import 'package:vrachipro/Screens/profiledoctor.dart';
 import 'package:vrachipro/Screens/homepage.dart';
 import 'package:vrachipro/Screens/profilemedic.dart';
 import 'package:vrachipro/Screens/profile.dart';
@@ -122,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                    MaterialPageRoute(builder: (context) => SpecialistsPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(

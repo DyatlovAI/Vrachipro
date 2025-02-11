@@ -3,10 +3,42 @@ import 'package:vrachipro/Screens/konsult.dart';
 import 'package:vrachipro/Screens/mydoctor.dart';
 import 'package:vrachipro/Screens/notification.dart';
 import 'package:vrachipro/Screens/deletepage.dart';
+import 'package:vrachipro/Screens/supportchat.dart';
+import 'package:vrachipro/Screens/homepage.dart';
+import 'package:vrachipro/Screens/zapis.dart';
 
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  int _selectedIndex = 2;
+
+  void _onItemTapped(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SpecialistsPage()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ZapisScreen()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilePage()),
+        );
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,10 +156,10 @@ class ProfilePage extends StatelessWidget {
                     'image': 'assets/images/chat.png',
                     'title': 'Чат с техподдержкой',
                     'onTap': () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => SupportChatPage()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChatScreen()),
+                      );
                     },
                   },
                   {
@@ -165,7 +197,9 @@ class ProfilePage extends StatelessWidget {
       ),
       backgroundColor: Color(0xFFF5F5F5),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        currentIndex: _selectedIndex,
+        onTap: (index) => _onItemTapped(context, index),
+        items: [
           BottomNavigationBarItem(
             icon: ImageIcon(
               AssetImage('assets/images/main.png'),
@@ -188,12 +222,8 @@ class ProfilePage extends StatelessWidget {
             label: 'Профиль',
           ),
         ],
-        currentIndex: 2,
         selectedItemColor: Color(0xFF00CCFF),
         unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          // Обработка нажатий
-        },
         backgroundColor: Color(0xFFF5F5F5),
       ),
     );
